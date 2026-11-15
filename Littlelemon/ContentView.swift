@@ -1,39 +1,48 @@
+
 import SwiftUI
 
 struct ContentView: View {
+
     var body: some View {
-        NavigationStack {
-            VStack(spacing: 25) {
-                Text("Little Lemon")
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-                    .foregroundColor(Color(red: 0.29, green: 0.37, blue: 0.34))
+        VStack(spacing: 25) {
 
-                Text("Welcome to Little Lemon!")
-                    .font(.title2)
+            Text("Little Lemon")
+                .font(.largeTitle)
+                .fontWeight(.bold)
+                .foregroundColor(
+                    Color(red: 0.29, green: 0.37, blue: 0.34)
+                )
 
-                Text("Discover delicious Mediterranean food.")
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal)
+            Text("Welcome to Little Lemon!")
+                .font(.title2)
 
-                NavigationLink("Get Started") {
-                    OnboardingView()
-                }
-                .padding()
-                .frame(maxWidth: .infinity)
-                .background(Color(red: 0.96, green: 0.81, blue: 0.08))
-                .foregroundColor(.black)
-                .cornerRadius(12)
-                .padding(.horizontal, 40)
+            Text("Discover delicious Mediterranean food.")
+                .multilineTextAlignment(.center)
+                .padding(.horizontal)
 
-                Spacer()
+            NavigationLink {
+                OnboardingView()
+            } label: {
+                Text("Get Started")
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(
+                        Color(red: 0.96, green: 0.81, blue: 0.08)
+                    )
+                    .foregroundColor(.black)
+                    .cornerRadius(12)
             }
-            .padding(.top, 80)
+            .padding(.horizontal, 40)
+
+            Spacer()
         }
+        .padding(.top, 80)
     }
 }
 
 #Preview {
-    ContentView()
+    NavigationStack {
+        ContentView()
+    }
 }
 

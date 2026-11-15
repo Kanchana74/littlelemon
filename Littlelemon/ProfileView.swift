@@ -7,8 +7,10 @@
 
 import SwiftUI
 import PhotosUI
+import CoreData
 
 struct ProfileView: View {
+    @Environment(\.dismiss) private var dismiss
 
     
     @AppStorage("isLoggedIn") private var isLoggedIn = false
@@ -189,20 +191,24 @@ struct ProfileView: View {
         savedNewsletter = newsletter
     }
 
-  
     private func logout() {
+        print("LOGOUT BUTTON PRESSED")
+
         savedFirstName = ""
         savedLastName = ""
         savedEmail = ""
         savedPhoneNumber = ""
 
         isLoggedIn = false
+
+        print("Login status after logout:", isLoggedIn)
     }
 }
 
 #Preview {
-    NavigationStack {
-        ProfileView()
-    }
+    RootView()
+        .environment(
+            \.managedObjectContext,
+            PersistenceController.shared.container.viewContext
+        )
 }
-

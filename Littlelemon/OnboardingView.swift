@@ -2,12 +2,12 @@
 import SwiftUI
 
 struct OnboardingView: View {
+    @AppStorage("isLoggedIn") private var isLoggedIn = false
     @State private var firstName = ""
     @State private var lastName = ""
     @State private var email = ""
-
     @State private var showError = false
-    @State private var goToNextScreen = false
+   
 
    
     var isFormValid: Bool {
@@ -89,8 +89,7 @@ struct OnboardingView: View {
                     )
 
                     showError = false
-                    goToNextScreen = true
-                } else {
+                    isLoggedIn = true                } else {
                     showError = true
                 }
             }
@@ -103,12 +102,11 @@ struct OnboardingView: View {
             Spacer()
         }
         .padding()
-        .navigationDestination(isPresented: $goToNextScreen) {
-            HomeView()
+       
         }
 
     }
-}
+
 
 
 struct OnboardingSuccessView: View {

@@ -18,9 +18,6 @@ struct RootView: View {
                 ContentView()
             }
         }
+        .id(isLoggedIn)
     }
-}
-
-#Preview {
-    RootView()
 }
