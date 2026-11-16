@@ -4,7 +4,6 @@
 //
 //  Created by Kanchana Panditha on 12/11/2026.
 //
-
 import SwiftUI
 import PhotosUI
 import CoreData
@@ -41,6 +40,7 @@ struct ProfileView: View {
     @State private var showSaveConfirmation = false
     @State private var showLogoutConfirmation = false
     @State private var showValidationError = false
+    @State private var showDiscardConfirmation = false
     
     @State private var selectedPhoto: PhotosPickerItem?
     @State private var profileImage: UIImage?
@@ -120,6 +120,7 @@ struct ProfileView: View {
                 Button("Discard Changes") {
                     loadSavedData()
                     showValidationError = false
+                    showDiscardConfirmation = true
                 }
                 .frame(maxWidth: .infinity)
 
