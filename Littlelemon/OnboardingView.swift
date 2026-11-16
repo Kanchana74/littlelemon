@@ -8,8 +8,6 @@ struct OnboardingView: View {
     @State private var email = ""
     @State private var showError = false
    
-
-   
     var isFormValid: Bool {
         let validName = !firstName.trimmingCharacters(
             in: .whitespacesAndNewlines
