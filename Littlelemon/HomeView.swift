@@ -57,23 +57,6 @@ struct HomeView: View {
         red: 0.96, green: 0.81, blue: 0.08
     )
 
-    private var filteredDishes: [Dish] {
-        dishes.filter { dish in
-
-            let matchesCategory =
-                selectedCategory == nil ||
-                dish.category?.lowercased() ==
-                selectedCategory?.lowercased()
-
-            let matchesSearch =
-                searchText.isEmpty ||
-                (dish.name ?? "")
-                    .localizedCaseInsensitiveContains(searchText)
-
-            return matchesCategory && matchesSearch
-        }
-    }
-
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
@@ -183,24 +166,21 @@ struct HomeView: View {
                     .fontWeight(.bold)
                     .padding(.horizontal)
 
-                if filteredDishes.isEmpty {
+                if dishes.isEmpty {
                     Text("No dishes available yet.")
                         .foregroundColor(.secondary)
                         .padding(.horizontal)
                 } else {
                     LazyVStack(spacing: 16) {
-                        ForEach(filteredDishes, id: \.objectID) { dish in
+                        ForEach(dishes, id: \.objectID) { dish in
                             HStack(alignment: .center, spacing: 12) {
 
                                 VStack(alignment: .leading, spacing: 6) {
                                     Text(dish.name ?? "Unknown Dish")
                                         .font(.headline)
 
-                                    Text(
-                                        dish.name == "Grilled Fish"
-                                        ? "Freshly grilled fish seasoned with Mediterranean herbs, garlic, lemon and olive oil."
-                                        : (dish.desc ?? "")
-                                    )
+                                 
+                                    Text(dish.desc ?? "")
                                     .font(.subheadline)
                                     .foregroundColor(.secondary)
 

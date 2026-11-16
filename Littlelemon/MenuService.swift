@@ -35,11 +35,7 @@ struct MenuService {
 
             dish.id = Int64(item.id)
             dish.name = item.title
-            if item.title == "Grilled Fish" {
-                dish.desc = "Freshly grilled fish seasoned with Mediterranean herbs, garlic, lemon and olive oil."
-            } else {
-                dish.desc = item.description
-            }
+            dish.desc = item.description
             dish.price = item.price
             dish.image = item.image
             dish.category = item.category
