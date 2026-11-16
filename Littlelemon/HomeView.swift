@@ -17,6 +17,33 @@ struct HomeView: View {
         animation: .default
     )
     private var dishes: FetchedResults<Dish>
+    
+   private func buildPredicate() -> NSPredicate {
+        var predicates: [NSPredicate] = []
+
+        if !searchText.isEmpty {
+            predicates.append(
+                NSPredicate(
+                    format: "name CONTAINS[cd] %@",
+                    searchText
+                )
+            )
+        }
+
+        if let category = selectedCategory {
+            predicates.append(
+                NSPredicate(
+                    format: "category ==[cd] %@",
+                    category
+                )
+            )
+        }
+
+        return NSCompoundPredicate(
+            andPredicateWithSubpredicates: predicates
+        )
+    }
+
 
     private let categories = [
         "Starters", "Mains", "Desserts", "Drinks"
@@ -105,6 +132,9 @@ struct HomeView: View {
                     TextField("Search menu", text: $searchText)
                         .autocorrectionDisabled()
                         .textInputAutocapitalization(.never)
+                        .onChange(of: searchText) { _, _ in
+                            dishes.nsPredicate = buildPredicate()
+                        }
                 }
                 .padding(12)
                 .background(Color.gray.opacity(0.15))
@@ -115,13 +145,16 @@ struct HomeView: View {
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 10) {
                         ForEach(categories, id: \.self) { category in
-                            Button {
+                           Button {
                                 if selectedCategory == category {
                                     selectedCategory = nil
                                 } else {
                                     selectedCategory = category
                                 }
+
+                                dishes.nsPredicate = buildPredicate()
                             } label: {
+
                                 Text(category)
                                     .font(.subheadline)
                                     .fontWeight(.semibold)
@@ -242,7 +275,17 @@ struct HomeView: View {
 
     @MainActor
     private func loadMenu() async {
-        guard dishes.isEmpty else { return }
+        
+        let request: NSFetchRequest<Dish> = Dish.fetchRequest()
+
+        do {
+            let count = try viewContext.count(for: request)
+            guard count == 0 else { return }
+        } catch {
+            menuError = error.localizedDescription
+            return
+        }
+
 
         guard let url = URL(
             string: "https://raw.githubusercontent.com/Meta-Mobile-Developer-PC/Working-With-Data-API/main/menu.json"
